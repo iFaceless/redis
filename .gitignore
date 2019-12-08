@@ -28,3 +28,10 @@ deps/lua/src/liblua.a
 .prerequisites
 *.dSYM
 Makefile.dep
+cmake_install.cmake
+cmake-build-debug/
+CMakeFiles/
+CMakeCache.txt
+.idea/
+*.cbp
+*.a
