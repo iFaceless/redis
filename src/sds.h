@@ -42,15 +42,23 @@ const char *SDS_NOINIT;
 
 typedef char *sds;
 
+// __attribute__ ((__packed__)) 使用这种方式，是需要按照一字节对齐
+// 这样做的好处有两个：
+// 1. 节约内存（否则不同的 sdshdr* 因为不同的字节对齐方式，而导致占据较多内存）
+// 2. 通过 header 获得 buf 地址时，不用考虑繁琐的字节对齐问题而导致计算复杂
 /* Note: sdshdr5 is never used, we just access the flags byte directly.
  * However is here to document the layout of type 5 SDS strings. */
 struct __attribute__ ((__packed__)) sdshdr5 {
+    // flags 的低三位表示类型，高三位表示字符串长度
     unsigned char flags; /* 3 lsb of type, and 5 msb of string length */
     char buf[];
 };
 struct __attribute__ ((__packed__)) sdshdr8 {
+    // len 字符串长度
     uint8_t len; /* used */
+    // alloc 表示柔性数组分配的长度（不包含 header 和字符串终止符号）
     uint8_t alloc; /* excluding the header and null terminator */
+    // flags 低三位表示类型，高 5 位保留
     unsigned char flags; /* 3 lsb of type, 5 unused bits */
     char buf[];
 };
@@ -127,6 +135,7 @@ static inline size_t sdsavail(const sds s) {
     return 0;
 }
 
+// sdssetlen 更新字符串长度
 static inline void sdssetlen(sds s, size_t newlen) {
     unsigned char flags = s[-1];
     switch(flags&SDS_TYPE_MASK) {
@@ -151,6 +160,7 @@ static inline void sdssetlen(sds s, size_t newlen) {
     }
 }
 
+// sdsinclen 增加字符串长度值
 static inline void sdsinclen(sds s, size_t inc) {
     unsigned char flags = s[-1];
     switch(flags&SDS_TYPE_MASK) {
@@ -194,6 +204,7 @@ static inline size_t sdsalloc(const sds s) {
     return 0;
 }
 
+// sdssetalloc 相当于扩容
 static inline void sdssetalloc(sds s, size_t newlen) {
     unsigned char flags = s[-1];
     switch(flags&SDS_TYPE_MASK) {
