@@ -86,6 +86,7 @@ static inline char sdsReqType(size_t string_size) {
  * You can print the string with printf() as there is an implicit \0 at the
  * end of the string. However the string is binary safe and can contain
  * \0 characters in the middle, as the length is stored in the sds header. */
+// sdsnewlen 创建一个新的 sds 对象，并使用 init 指向的内容初始化
 sds sdsnewlen(const void *init, size_t initlen) {
     void *sh;
     sds s;
@@ -244,7 +245,7 @@ sds sdsMakeRoomFor(sds s, size_t addlen) {
 
     hdrlen = sdsHdrSize(type);
     if (oldtype==type) {
-        // 如果类型不变，则执行原地扩容
+        // 如果类型不变，则执行扩容
         newsh = s_realloc(sh, hdrlen+newlen+1);
         if (newsh == NULL) return NULL;
         // 获取新的 sds 指向

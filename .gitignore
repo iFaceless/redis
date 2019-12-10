@@ -35,3 +35,4 @@ CMakeCache.txt
 .idea/
 *.cbp
 *.a
+tmp/

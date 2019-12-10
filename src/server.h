@@ -811,9 +811,13 @@ struct sharedObjectsStruct {
 typedef struct zskiplistNode {
     sds ele;
     double score;
+    // 回退指针，便于倒序遍历
     struct zskiplistNode *backward;
     struct zskiplistLevel {
+        // 指向同一层的下个节点，可以为 NULL
         struct zskiplistNode *forward;
+        // forward 指向的下一个节点的距离
+        // 利用 span 可以快速计算 rank
         unsigned long span;
     } level[];
 } zskiplistNode;
