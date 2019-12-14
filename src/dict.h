@@ -74,8 +74,8 @@ typedef struct dictht {
 } dictht;
 
 typedef struct dict {
-    dictType *type;
-    void *privdata;
+    dictType *type; // 依赖数据抽象的操作接口
+    void *privdata; // 私有数据，配合 type 字段指向的函数使用
     dictht ht[2]; // 有两个 hash table
     // rehashidx 表示 rehash 的进度
     long rehashidx; /* rehashing not in progress if rehashidx == -1 */

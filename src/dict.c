@@ -982,7 +982,6 @@ static int _dictExpandIfNeeded(dict *d)
 
 /* Our hash table capability is a power of two */
 // 扩容策略是从初始值开始平方计算，直到找到一个大于等于期望值的大小
-// 4 -> 4^2 -> 4^4 -> 4^6 -> ...
 static unsigned long _dictNextPower(unsigned long size)
 {
     unsigned long i = DICT_HT_INITIAL_SIZE;
