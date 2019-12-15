@@ -99,7 +99,7 @@ quicklist *quicklistCreate(void) {
     quicklist->len = 0;
     quicklist->count = 0;
     quicklist->compress = 0;
-    quicklist->fill = -2;
+    quicklist->fill = -2; // ziplist 最大 8KB
     return quicklist;
 }
 
