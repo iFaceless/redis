@@ -234,11 +234,14 @@
 
 /* Return the length of a ziplist, or UINT16_MAX if the length cannot be
  * determined without scanning the whole ziplist. */
+// 返回 ziplist 长度，如果返回值为 UINT16_MAX 的话，那就需要扫描所有的 entries 才
+// 能确定长度了。
 #define ZIPLIST_LENGTH(zl)      (*((uint16_t*)((zl)+sizeof(uint32_t)*2)))
 
 /* The size of a ziplist header: two 32 bit integers for the total
  * bytes count and last item offset. One 16 bit integer for the number
  * of items field. */
+// <uint32_t zlbytes> + <uint32_t zltail> + <uint16_t zllen>
 #define ZIPLIST_HEADER_SIZE     (sizeof(uint32_t)*2+sizeof(uint16_t))
 
 /* Size of the "end of ziplist" entry. Just one byte. */

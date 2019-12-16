@@ -109,7 +109,7 @@ void zslFreeNode(zskiplistNode *node) {
 void zslFree(zskiplist *zsl) {
     zskiplistNode *node = zsl->header->level[0].forward, *next;
 
-    // 实际上就是遍历 level[0] 链表，每次释放一个节点
+    // 实际上就是遍历最底层链表，每次释放一个节点
     zfree(zsl->header);
     while(node) {
         next = node->level[0].forward;
