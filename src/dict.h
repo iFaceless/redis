@@ -68,16 +68,18 @@ typedef struct dictType {
  * implement incremental rehashing, for the old to the new table. */
 typedef struct dictht {
     dictEntry **table;
-    unsigned long size;
-    unsigned long sizemask;
-    unsigned long used;
+    unsigned long size; // 哈希表真正的大小
+    unsigned long sizemask; // sizemask = size-1，这里用于 hash & sizemask 计算出 slot
+    unsigned long used; // 哈希表中的 keys 个数
 } dictht;
 
 typedef struct dict {
-    dictType *type;
-    void *privdata;
-    dictht ht[2];
+    dictType *type; // 依赖数据抽象的操作接口
+    void *privdata; // 私有数据，配合 type 字段指向的函数使用
+    dictht ht[2]; // 有两个 hash table
+    // rehashidx 表示 rehash 的进度
     long rehashidx; /* rehashing not in progress if rehashidx == -1 */
+    // iterators 当前正在运行的迭代器数量
     unsigned long iterators; /* number of iterators currently running */
 } dict;
 
